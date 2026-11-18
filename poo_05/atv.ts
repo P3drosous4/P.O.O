@@ -11,8 +11,6 @@ class Clientes  {
 }
 
 
-
-
 class Conta {
     id: number;
     numero: string;
@@ -57,7 +55,7 @@ class Banco {
         this.clientes = [];
     }
 
-    inserir(conta: Conta): void {
+    inserirContas(conta: Conta): void {
         this.contas.push(conta);
     }
 
@@ -129,9 +127,14 @@ class Banco {
     }
 
 
-    consultarCliente(cpf:string): string| undefined {
-        let result = this.clientes.find(c=> c.cpf === cpf);
-        return result ? result.nome : undefined;
+    consultarCliente(cpf:string) {
+        for (let escolhido of this.clientes){
+            if( escolhido.cpf=== cpf){
+                return escolhido
+            }
+        }
+        // let result = this.clientes.find(c=> c.cpf === cpf);
+        // return result ? result.nome : undefined;
 
         
     }
@@ -165,10 +168,10 @@ class Banco {
     associarContaCliente(numeroConta: string, cpfCliente:string){
 
         let conta = this.consultarPorNumero(numeroConta)
-        let cpf = this.consultarPorcpf(cpfCliente)
+        let cliente= this.consultarPorcpf(cpfCliente)
 
 
-        if(!conta || !cpf){
+        if(!conta || !cliente){
             console.log("não foi possivel encontara conta ou cpf")
             return
         }
@@ -178,19 +181,33 @@ class Banco {
             return 
         }
 
-        for(let buscas of conta.numero ){
-            if(buscas===numeroConta){
+        for(let buscas of cliente.contas){
+            if(buscas.numero===numeroConta){
                 console.log("Esse cliente ja esta associadoa a essa conta !")
                 return 
-            }
+            }   
         }
 
 
-        conta.cliente=cpf
+        conta.cliente=cliente
+        cliente.contas.push(conta);
 
     
         
     }
+
+
+    listarContasClientes(cpf:string){
+        let result = this.consultarCliente(cpf)
+        if(result){
+            return result.contas
+        }
+        else{
+            console.log("sem contas existentes")
+        }
+    }
     
-   
 }
+
+
+
