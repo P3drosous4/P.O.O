@@ -1,21 +1,21 @@
 // questao
 
-class Clientes2  {
+export class Clientes  {
     constructor(public id: number, 
         public nome : string,
          public cpf: string,
           public dataNascimento: Date,
-           public contas: Conta2[]) {};
+           public contas: Conta[] = []) {};
 
     
 }
 
 
-class Conta2 {
+export class Conta {
     id: number;
     numero: string;
     saldo: number;
-    cliente: Clientes2| null// questao
+    cliente: Clientes | null// questao
 
 
     constructor(id: number, numero: string, saldo: number, public dataAbertura: Date) {
@@ -33,7 +33,7 @@ class Conta2 {
         this.saldo = this.saldo - valor;
     }
 
-    transferir(contaDestino: Conta2, valor: number): void {
+    transferir(contaDestino: Conta, valor: number): void {
         /* this.saldo = this.saldo - valor;
         contaDestino.saldo = contaDestino.saldo + valor;*/
         this.sacar(valor);
@@ -46,20 +46,20 @@ class Conta2 {
 }
 
 
-class Banco2 {
-    contas: Conta2[];
-    clientes: Clientes2[];
+export class Banco {
+    contas: Conta[];
+    clientes: Clientes[];
 
     constructor() {
         this.contas = [];
         this.clientes = [];
     }
 
-    inserirContas(conta: Conta2): void {
+    inserirContas(conta: Conta): void {
         this.contas.push(conta);
     }
 
-    consultar(numero: string): Conta2 | null {
+    consultar(numero: string): Conta | null {
 
         for (let conta of this.contas) {
             if (conta.numero == numero) {
@@ -99,7 +99,7 @@ class Banco2 {
     }
 
     depositar(numero: string, valor: number): void {
-        let contaProcurada: Conta2 | null = this.consultar(numero);
+        let contaProcurada: Conta | null = this.consultar(numero);
 
         if (contaProcurada) {
             contaProcurada.depositar(valor);
@@ -107,7 +107,7 @@ class Banco2 {
     }
 
     sacar(id: string, valor: number): void {
-        let contraProcurada: Conta2 | null = this.consultar(id);
+        let contraProcurada: Conta | null = this.consultar(id);
         
         if (contraProcurada) {
             contraProcurada.sacar(valor);
@@ -115,8 +115,8 @@ class Banco2 {
     }
 
     transferir(numOrigem: string, numDestino: string, valor: number): void {
-        let contaOrigem: Conta2 | null = this.consultar(numOrigem);
-        let contaDestino: Conta2 | null = this.consultar(numDestino);
+        let contaOrigem: Conta | null = this.consultar(numOrigem);
+        let contaDestino: Conta | null = this.consultar(numDestino);
 
         if (contaOrigem && contaDestino) {
             contaOrigem.transferir(contaDestino, valor);
@@ -124,7 +124,7 @@ class Banco2 {
     }
 
 
-    inserirCliente(cliente: Clientes2): void{
+    inserirCliente(cliente: Clientes): void{
         this.clientes.push(cliente) //questao
     }
 
@@ -141,7 +141,7 @@ class Banco2 {
     }
 
 
-    consultarPorNumero(numero:string): Conta2 | null{
+    consultarPorNumero(numero:string): Conta | null{
         for(let num of this.contas){
             if (num.numero===numero){
                 console.log("numero encontrado com suceso !")
@@ -166,7 +166,7 @@ class Banco2 {
         }
 
         if(conta.cliente!==null){
-            console.log("essa cinta ja esta associada a um cliente")
+            console.log("essa conta ja esta associada a um cliente")
             return 
         }
 
@@ -186,7 +186,7 @@ class Banco2 {
     }
 
 
-    atualizar(conta: Conta2): void{
+    atualizar(conta: Conta): void{
         let indice = this.consultarIndice(conta.numero)
 
         if(indice!==-1){
@@ -307,7 +307,7 @@ class Banco2 {
 
 
     listarSemCliente(){
-        let lista:Conta2[]
+        let lista:Conta[] = []
 
 
         for(let c of this.contas){
@@ -318,9 +318,48 @@ class Banco2 {
                 return lista
             }
         }
-        //mudança de titularidade
+    }
+    
+
+    carregarDados(){
+        let c1 = new Clientes (1, "carlos", "081.934.567-00",new Date(2000, 3, 27), )
+        let c2 = new Clientes (2, "elaine", "081.546.789-00",new Date(2000, 3, 27), )
+        let c3 = new Clientes (3, "jose", "081.123.089-00",new Date(2000, 3, 27), )
+        let c4 = new Clientes (4, "pedro", "081.687.260-00",new Date(2000, 3, 27), )
+        let c5 = new Clientes (5, "ana", "081.274.370-00",new Date(2000, 3, 27), )
+
+
+        this.inserirCliente(c1)
+        this.inserirCliente(c2)
+        this.inserirCliente(c3)
+        this.inserirCliente(c4)
+        this.inserirCliente(c5)
+
+
+        let con1 = new Conta (11, "111-1", 10000, new Date())
+        let con2 = new Conta (12, "111-1", 10000, new Date())
+        let con3 = new Conta (13, "111-1", 10000, new Date())
+        let con4 = new Conta (14, "111-1", 10000, new Date())
+        let con5 = new Conta (15, "111-1", 10000, new Date())
+
+
+        this.inserirContas(con1)
+        this.inserirContas(con2)
+        this.inserirContas(con3)
+        this.inserirContas(con4)
+        this.inserirContas(con5)
+
+
+        this.associarContaCliente(con1.numero, c1.cpf)
+        this.associarContaCliente(con2.numero, c2.cpf)
+        this.associarContaCliente(con3.numero, c3.cpf)
+
+
     }
 }
+
+
+
 
 
 
