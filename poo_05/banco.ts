@@ -205,7 +205,7 @@ export class Banco {
         if(!conta ||!numDestino){
             console.log("não foi possivei encontrar a conta origem ou não existe nenhuma conta para destino ")
             return 
-        }
+        } 
 
         if(conta.saldo<numDestino.length*valor){
             console.log("saldo isuficiente")
@@ -353,14 +353,5 @@ export class Banco {
         this.associarContaCliente(con1.numero, c1.cpf)
         this.associarContaCliente(con2.numero, c2.cpf)
         this.associarContaCliente(con3.numero, c3.cpf)
-
-
     }
 }
-
-
-
-
-
-
-
